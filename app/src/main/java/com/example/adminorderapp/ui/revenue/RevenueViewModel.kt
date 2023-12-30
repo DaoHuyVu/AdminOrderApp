@@ -20,7 +20,10 @@ class RevenueViewModel @Inject constructor(
     private val revenueRepository: RevenueRepository,
     private val menuItemRepository: MenuItemRepository
 ) : ViewModel(){
-
+    private var isInitialPhaseSetup = true
+    private var isInitialDaySetup = true
+    private var isInitialYearSetup = true
+    private var isInitialMonthSetup = true
     private val _selectedPhasePositionLiveData = MutableLiveData(0)
     val selectedPhasePositionLiveData : LiveData<Int> get() = _selectedPhasePositionLiveData
     val selectedPhasePosition get() =  selectedPhasePositionLiveData.value!!
@@ -36,7 +39,6 @@ class RevenueViewModel @Inject constructor(
 
     fun onMenuItemChange(position : Int){
         selectedMenuItemPosition = position
-        getRevenuesCategory()
     }
 
     private val calendar = Calendar.getInstance()
@@ -59,24 +61,19 @@ class RevenueViewModel @Inject constructor(
 
     fun onPhasePositionChange(position : Int){
         _selectedPhasePositionLiveData.value = position
-        Log.e("Test1","called")
-        getRevenues()
-
+        if(!isInitialPhaseSetup) getRevenues() else isInitialPhaseSetup = false
     }
     fun onSelectedYearPositionChange(position : Int){
-        Log.e("Test2","called")
         selectedYearPosition = position
-        getRevenues()
+        if(!isInitialYearSetup) getRevenues() else isInitialYearSetup = false
     }
     fun onSelectedMonthPositionChange(position : Int){
-        Log.e("Test3","called")
         selectedMonthPosition = position
-        getRevenues()
+        if(!isInitialMonthSetup) getRevenues() else isInitialMonthSetup = false
     }
     fun onSelectedDayPositionChange(position : Int){
-        Log.e("Test4","called")
         selectedDayPosition = position
-        getRevenues()
+        if(!isInitialDaySetup) getRevenues() else isInitialDaySetup = false
     }
     fun messageShown(){
         _revenueData.value = _revenueData.value?.copy(message = null)

@@ -51,7 +51,6 @@ class RevenueFragment : Fragment() {
             byPhaseSpinner.setSelection(viewModel.selectedPhasePosition)
             byPhaseSpinner.onItemSelectedListener = provideOnItemSelectedListener {
                     position -> viewModel.onPhasePositionChange(position)
-
             }
             yearSpinner.adapter = provideSpinnerAdapter(yearArray)
             yearSpinner.setSelection(viewModel.selectedYearPosition)
