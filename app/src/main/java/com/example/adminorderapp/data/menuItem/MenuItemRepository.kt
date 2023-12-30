@@ -102,5 +102,10 @@ class MenuItemRepository @Inject constructor(
             }
         }
     }
-    fun getMenuItemName() = menuItemList.map { item -> item.name }
+    suspend fun getMenuItemName() : List<String> {
+        if(menuItemList.isEmpty()){
+            fetchMenuItemUiViewList()
+        }
+        return menuItemList.map { item -> item.name }
+    }
 }

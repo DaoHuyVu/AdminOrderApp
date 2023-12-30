@@ -39,6 +39,7 @@ class RevenueViewModel @Inject constructor(
 
     fun onMenuItemChange(position : Int){
         selectedMenuItemPosition = position
+        getRevenuesCategory()
     }
 
     private val calendar = Calendar.getInstance()
@@ -79,7 +80,9 @@ class RevenueViewModel @Inject constructor(
         _revenueData.value = _revenueData.value?.copy(message = null)
     }
     fun getCategories(){
-        _menuItems.value = menuItemRepository.getMenuItemName()
+        viewModelScope.launch {
+            _menuItems.value = menuItemRepository.getMenuItemName()
+        }
     }
     fun getRevenues(){
         when(selectedPhasePosition){
@@ -96,7 +99,7 @@ class RevenueViewModel @Inject constructor(
                 }
             2 -> handleRevenueCallback{ revenueRepository.getRevenues(year = selectedYearValue) }
         }
-        if(menuItems.value!!.isNotEmpty()){
+        if(menuItems.value?.isNotEmpty() == true){
             getRevenuesCategory()
         }
     }
@@ -123,11 +126,11 @@ class RevenueViewModel @Inject constructor(
        }
     }
     private fun handleRevenueCallback(
-        callback1 : suspend () -> ApiResult<List<Revenue>>
+        callback : suspend () -> ApiResult<List<Revenue>>
     ) {
         _revenueData.value = _revenueData.value?.copy(isLoading = true)
         viewModelScope.launch {
-            when (val result = callback1.invoke()) {
+            when (val result = callback.invoke()) {
                 is ApiResult.Success -> _revenueData.value =
                     _revenueData.value?.copy(overallRevenue = result.data, isLoading = false)
                 is ApiResult.Error -> _revenueData.value =
