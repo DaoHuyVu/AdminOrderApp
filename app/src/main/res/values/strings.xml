@@ -1,0 +1,124 @@
+<resources>
+    <string name="app_name">AdminOrderApp</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="invalid_username">*Username\'s length must be 8 to 25 characters long</string>
+    <string name="invalid_password">*Password must be > 8 characters\n A combination of uppercase letters, lowercase letters, numbers, and symbols.</string>
+    <string name="login_button_text">Login</string>
+    <string name="Username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="sign_up_text_navigation">Don\'t have an account? <b>Sign up</b></string>
+    <string name="username_empty">Email must not be empty</string>
+    <string name="password_empty">Password must not be empty</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="login_successfully">Login successfully</string>
+    <string name="email_hint">Email</string>
+    <string name="invalid_email">*This email is invalid</string>
+    <string name="sign_up_fail">Sign up fail,please try again later</string>
+    <string name="login_fail">Username or password is incorrect</string>
+    <string name="signup">Sign up</string>
+    <string name="server_breakdown">Server breakdown, please try again later</string>
+    <string name="sign_up_successfully"><b>Sign up successfully, please verify your email to activate account</b></string>
+    <string name="menu_label">Menu</string>
+    <string name="cart_label">Cart</string>
+    <string name="personal_label">Personal</string>
+    <string name="logout">Logout</string>
+    <string name="back_to_login_label">Back to login</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="item_price">$%1$s</string>
+    <string name="category_label">Category</string>
+    <string name="total">Total : $%1$s</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="order">Order</string>
+    <string name="start_ordering">Start ordering</string>
+    <string name="sample_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</string>
+    <string name="added">Added to cart</string>
+    <string name="dialog_message">Do you really want to remove this item?</string>
+    <string name="dialog_title">Remove item</string>
+    <string name="dialog_negative">Yes</string>
+    <string name="dialog_positive">Cancel</string>
+    <string name="add_failed">Add failed</string>
+    <string name="phone_label">Phone Number</string>
+    <string name="address">Address</string>
+    <string name="name_input_invalid">Name can not be empty</string>
+    <string name="phone_input_invalid">Phone can not be empty</string>
+    <string name="branch_label">Choose a store</string>
+    <string name="address_input_invalid">Address can not be empty</string>
+    <string name="order_successfully">Order Successfully</string>
+    <string name="no_order_item">There\'s nothing in your cart yet</string>
+    <string name="order_history">Order history</string>
+    <string name="order_id">Order id : %1$d</string>
+    <string name="order_destination">Destination : %1$s</string>
+    <string name="order_location">Store : %1$s</string>
+    <string name="order_status">Status : %1$s</string>
+    <string name="order_created_at">Created at : %1$s</string>
+    <string name="no_order_history">You haven\'t ordered anything</string>
+    <string name="name">Name : %1$s </string>
+    <string name="email">Email : %1$s </string>
+    <string name="menu_item_management">Menu Item </string>
+    <string-array name="tab_label">
+        <item>Manager</item>
+        <item>Shipper</item>
+        <item>Menu item</item>
+        <item>Store</item>
+        <item>Category</item>
+        <item>Revenue</item>
+    </string-array>
+    <string name="add">Add</string>
+    <string name="id">Id : %1$d</string>
+    <string name="phone_hint">Phone</string>
+    <string name="salary_hint">Salary</string>
+    <string name="gender">Gender</string>
+    <string name="female_label">Female</string>
+    <string name="male_label">Male</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="date_picker_label">Pick</string>
+    <string name="date_of_birth_display">%1$02d/%2$02d/%3$02d</string>
+    <string name="added_successfully">Added successfully</string>
+    <string name="updated_successfully">Updated successfully</string>
+    <string name="item_name">Name</string>
+    <string name="price">Price</string>
+    <string name="item_description">Description</string>
+    <string name="choose_an_image">Choose an image</string>
+    <string name="image_url">Url</string>
+    <string name="city">City</string>
+    <string name="district">District</string>
+    <string name="street">Street</string>
+    <string name="opening_time">Opening time</string>
+    <string name="closing_time">Closing time</string>
+    <string name="time_display">%1$02d:%2$02d</string>
+    <string name="delete_successfully">Delete Successfully</string>
+    <string name="item_details">Item details</string>
+    <string name="delete_item">Delete item</string>
+    <string name="update_label">Update</string>
+    <string name="update_failed">Update failed</string>
+    <string name="revenue_label">Revenue</string>
+    <string name="by">By</string>
+    <string-array name="by_array">
+        <item>Day</item>
+        <item>Month</item>
+        <item>Year</item>
+    </string-array>
+    <integer-array name="month_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </integer-array>
+    <string name="bad_request">Bad request</string>
+    <string name="logout_message">Do you really want to logout?</string>
+    <string name="cancel_label">Cancel</string>
+    <string name="yes_label">Yes</string>
+    <string name="delete_message">Do you really want to delete this item?</string>
+</resources>

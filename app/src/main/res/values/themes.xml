@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.AdminOrderApp" parent="Theme.Material3.DayNight.NoActionBar">
+    </style>
+
+    <style name="StartingTheme.AdminOrderApp" parent="Base.Theme.AdminOrderApp">
+
+    </style>
+</resources>

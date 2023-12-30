@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.adminorderapp.ui.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_createStoreFragment"
+            app:destination="@id/createStoreFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_createManagerFragment"
+            app:destination="@id/createManagerFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_createMenuItemFragment"
+            app:destination="@id/createMenuItemFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_createShipperFragment"
+            app:destination="@id/createShipperFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_createCategoryFragment2"
+            app:destination="@id/createCategoryFragment2" />
+        <action
+            android:id="@+id/action_homeFragment_to_categoryDetailsFragment"
+            app:destination="@id/categoryDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_managerDetailsFragment"
+            app:destination="@id/managerDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_menuItemDetailFragment"
+            app:destination="@id/menuItemDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_shipperDetailsFragment"
+            app:destination="@id/shipperDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_storeDetailsFragment"
+            app:destination="@id/storeDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_storeRevenueFragment2"
+            app:destination="@id/storeRevenueFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createManagerFragment"
+        android:name="com.example.adminorderapp.ui.manager.create.CreateManagerFragment"
+        android:label="Create Manager"
+        tools:layout="@layout/fragment_create_manager" />
+    <fragment
+        android:id="@+id/createStoreFragment"
+        android:name="com.example.adminorderapp.ui.store.create.CreateStoreFragment"
+        android:label="Create Store"
+        tools:layout="@layout/fragment_create_store" />
+    <fragment
+        android:id="@+id/createMenuItemFragment"
+        android:name="com.example.adminorderapp.ui.menuItem.create.CreateMenuItemFragment"
+        android:label="Create Menu Item"
+        tools:layout="@layout/fragment_create_menu_item" />
+    <fragment
+        android:id="@+id/createShipperFragment"
+        android:name="com.example.adminorderapp.ui.shipper.create.CreateShipperFragment"
+        android:label="Create Shipper"
+        tools:layout="@layout/fragment_create_shipper" />
+    <fragment
+        android:id="@+id/createCategoryFragment2"
+        android:name="com.example.adminorderapp.ui.category.create.CreateCategoryFragment"
+        android:label="Create Category"
+        tools:layout="@layout/fragment_create_category" />
+    <fragment
+        android:id="@+id/categoryDetailsFragment"
+        android:name="com.example.adminorderapp.ui.category.details.CategoryDetailsFragment"
+        android:label="Category Details"
+        tools:layout="@layout/fragment_category_details">
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/managerDetailsFragment"
+        android:name="com.example.adminorderapp.ui.manager.details.ManagerDetailsFragment"
+        android:label="Manager Details"
+        tools:layout="@layout/fragment_manager_details" >
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/menuItemDetailFragment"
+        android:name="com.example.adminorderapp.ui.menuItem.details.MenuItemDetailsFragment"
+        android:label="Menu Item Details"
+        tools:layout="@layout/fragment_menu_item_details">
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/shipperDetailsFragment"
+        android:name="com.example.adminorderapp.ui.shipper.details.ShipperDetailsFragment"
+        android:label="Shipper Details"
+        tools:layout="@layout/fragment_shipper_details" >
+        <argument android:name="id"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/storeDetailsFragment"
+        android:name="com.example.adminorderapp.ui.store.details.StoreDetailsFragment"
+        android:label="Store Details"
+        tools:layout="@layout/fragment_store_details" >
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/storeRevenueFragment"
+        android:name="com.example.adminorderapp.ui.revenue.StoreRevenueFragment"
+        android:label="Store revenue"
+        tools:layout="@layout/fragment_store_revenue" >
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
+</navigation>
