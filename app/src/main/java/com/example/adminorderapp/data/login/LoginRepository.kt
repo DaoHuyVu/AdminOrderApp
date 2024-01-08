@@ -23,14 +23,13 @@ class LoginRepository @Inject constructor(
         return try{
             if(response.isSuccessful){
                if(response.body()!!.role[0] != ROLE)
-                   ApiResult.Error(Message.BAD_REQUEST)
+                   ApiResult.Error(Message.LOAD_ERROR)
                 else{
                    dataStoreUtil.saveUserInfo(response.body()!!.accessToken)
                    ApiResult.Success(response.body()!!)
                }
             }
-            else if(response.code() == 400)
-                ApiResult.Error(Message.BAD_REQUEST)
+            else if(response.code() == 403) ApiResult.Error(Message.LOAD_ERROR)
             else ApiResult.Error(Message.SERVER_BREAKDOWN)
         }catch(ex : UnknownHostException){
             ApiResult.Error(Message.NO_INTERNET_CONNECTION)

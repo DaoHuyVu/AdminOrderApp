@@ -69,7 +69,7 @@ class StoreDetailsFragment : Fragment() {
                 when(message){
                     Message.NO_INTERNET_CONNECTION -> showToast(getString(R.string.no_internet_connection))
                     Message.SERVER_BREAKDOWN -> showToast(getString(R.string.server_breakdown))
-                    Message.BAD_REQUEST -> showToast(getString(R.string.bad_request))
+                    Message.LOAD_ERROR -> showToast(getString(R.string.load_error))
                     else -> throw IllegalStateException()
                 }
                 viewModel.messageShown()

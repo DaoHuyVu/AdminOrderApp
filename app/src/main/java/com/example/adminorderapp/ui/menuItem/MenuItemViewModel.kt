@@ -26,12 +26,12 @@ class MenuItemViewModel @Inject constructor(
         fetchMenuItemList()
     }
     val menuItemUiState get() = _menuItemUiState
-    private val _categories = MutableLiveData<List<Category>?>()
+    private val _categories = MutableLiveData(listOf<Category>())
     init{
         getCategories()
     }
-    val categories : LiveData<Array<String>?> = _categories.map { list ->
-        list?.map{it.name}?.toTypedArray()
+    val categories : LiveData<Array<String>> = _categories.map { list ->
+        list.map{it.name}.toTypedArray()
     }
     // Display all menu item by default
     var selectedCategory : Category? = null
@@ -49,7 +49,7 @@ class MenuItemViewModel @Inject constructor(
             _menuItemUiState.value = _menuItemUiState.value?.copy(isLoading = true)
             viewModelScope.launch {
                 when(val result = categoryRepository.getCategories()){
-                    is ApiResult.Success -> _categories.value = result.data
+                    is ApiResult.Success -> _categories?.value = result.data
                     is ApiResult.Error -> _menuItemUiState.value = _menuItemUiState.value?.copy(message = result.message, isLoading = false)
                     is ApiResult.Exception -> _menuItemUiState.value = _menuItemUiState.value?.copy(message = Message.SERVER_BREAKDOWN, isLoading = false)
                 }

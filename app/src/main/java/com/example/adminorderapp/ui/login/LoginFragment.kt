@@ -55,7 +55,7 @@ class LoginFragment : Fragment() {
                 loginProgressbar.visibility = if(it.isLoading) View.VISIBLE else View.GONE
                 it.message?.let{
                     when(it){
-                        Message.BAD_REQUEST -> showToast(getString(R.string.login_fail))
+                        Message.LOAD_ERROR -> showToast(getString(R.string.login_fail))
                         Message.SERVER_BREAKDOWN -> showToast(getString(R.string.server_breakdown))
                         Message.NO_INTERNET_CONNECTION -> showToast(getString(R.string.no_internet_connection))
                         else -> throw IllegalStateException()
