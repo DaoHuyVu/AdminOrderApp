@@ -30,7 +30,7 @@ class StoreRepository @Inject constructor(
                     storeList = LinkedList(response.body()!!)
                     ApiResult.Success(response.body()!!.map { store -> store.toStoreUiView() })
                 } else if(response.code() in 400 .. 500 ){
-                    ApiResult.Error(Message.BAD_REQUEST)
+                    ApiResult.Error(Message.LOAD_ERROR)
                 }
                 else ApiResult.Error(Message.SERVER_BREAKDOWN)
             }catch(ex : UnknownHostException){
@@ -48,7 +48,7 @@ class StoreRepository @Inject constructor(
                     unManagedStores = LinkedList(response.body()!!)
                     ApiResult.Success(response.body()!!.map { store -> store.toStoreUiView() })
                 } else if(response.code() in 400 .. 500 ){
-                    ApiResult.Error(Message.BAD_REQUEST)
+                    ApiResult.Error(Message.LOAD_ERROR)
                 }
                 else ApiResult.Error(Message.SERVER_BREAKDOWN)
             }catch(ex : UnknownHostException){
@@ -67,7 +67,7 @@ class StoreRepository @Inject constructor(
                     ApiResult.Success(response.body()!!)
                 }
                 else if(response.code() in 400 .. 500 ){
-                    ApiResult.Error(Message.BAD_REQUEST)
+                    ApiResult.Error(Message.LOAD_ERROR)
                 }
                 else ApiResult.Error(Message.SERVER_BREAKDOWN)
             }catch(ex : UnknownHostException){
@@ -85,7 +85,7 @@ class StoreRepository @Inject constructor(
                     storeList.remove(response.body()!!)
                     ApiResult.Success(storeList.toList().map { store -> store.toStoreUiView() })
                 } else if (response.code() in 400..500) {
-                    ApiResult.Error(Message.BAD_REQUEST)
+                    ApiResult.Error(Message.LOAD_ERROR)
                 } else ApiResult.Error(Message.SERVER_BREAKDOWN)
             } catch (ex: UnknownHostException) {
                 ApiResult.Error(Message.NO_INTERNET_CONNECTION)
@@ -105,7 +105,7 @@ class StoreRepository @Inject constructor(
                     ApiResult.Success(response.body()!!)
                 }
                 else if(response.code() in 400 .. 500 ){
-                    ApiResult.Error(Message.BAD_REQUEST)
+                    ApiResult.Error(Message.LOAD_ERROR)
                 }
                 else ApiResult.Error(Message.SERVER_BREAKDOWN)
             }catch(ex : UnknownHostException){

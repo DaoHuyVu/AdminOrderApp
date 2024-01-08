@@ -1,9 +1,11 @@
 package com.example.adminorderapp.ui.revenue
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -32,59 +34,69 @@ class RevenueFragment : Fragment() {
     private lateinit var monthArray : List<Int>
     private lateinit var yearArray : List<Int>
     private lateinit var dayArray : List<Int>
+    private var isFromUser = false
     private val calendar = Calendar.getInstance()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        phaseArray = resources.getStringArray(R.array.by_array).toList()
+        monthArray = resources.getIntArray(R.array.month_array).toList()
+        val currentYear = calendar.get(Calendar.YEAR)
+        yearArray = (currentYear downTo  currentYear-2).toList()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRevenueBinding.inflate(inflater)
-        phaseArray = resources.getStringArray(R.array.by_array).toList()
-        monthArray = resources.getIntArray(R.array.month_array).toList()
-        val currentYear = calendar.get(Calendar.YEAR)
-        yearArray = (currentYear downTo  currentYear-2).toList()
         return binding.root
     }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+
+    override fun onStart() {
         binding.apply {
             byPhaseSpinner.adapter = provideSpinnerAdapter(phaseArray)
             byPhaseSpinner.setSelection(viewModel.selectedPhasePosition)
-            byPhaseSpinner.onItemSelectedListener = provideOnItemSelectedListener {
-                    position -> viewModel.onPhasePositionChange(position)
-            }
+
             yearSpinner.adapter = provideSpinnerAdapter(yearArray)
             yearSpinner.setSelection(viewModel.selectedYearPosition)
-            yearSpinner.onItemSelectedListener = provideOnItemSelectedListener {
-                    position -> viewModel.onSelectedYearPositionChange(position)
-                    setUpDaySpinner()
-            }
+
             monthSpinner.adapter = provideSpinnerAdapter(monthArray)
             monthSpinner.setSelection(viewModel.selectedMonthPosition)
-            monthSpinner.onItemSelectedListener = provideOnItemSelectedListener {
-                    position -> viewModel.onSelectedMonthPositionChange(position)
-                    setUpDaySpinner()
-            }
-            
+
             setUpDaySpinner()
             swipeRefreshLayout.setOnRefreshListener {
-                viewModel.getRevenues()
+                viewModel.initialCall()
                 swipeRefreshLayout.isRefreshing = true
             }
 
-            daySpinner.onItemSelectedListener = provideOnItemSelectedListener {
-                    position -> viewModel.onSelectedDayPositionChange(position)
+            byPhaseSpinner.onItemSelectedListener = provideOnItemSelectedListener { position ->
+                viewModel.onPhasePositionChange(position)
             }
+            byPhaseSpinner.setOnTouchListener(provideOnTouchEventListener())
+            daySpinner.onItemSelectedListener = provideOnItemSelectedListener { position ->
+                viewModel.onSelectedDayPositionChange(position)
+            }
+            daySpinner.setOnTouchListener(provideOnTouchEventListener())
+            yearSpinner.onItemSelectedListener = provideOnItemSelectedListener { position ->
+                viewModel.onSelectedYearPositionChange(position)
+                setUpDaySpinner()
+            }
+            yearSpinner.setOnTouchListener(provideOnTouchEventListener())
+            monthSpinner.onItemSelectedListener = provideOnItemSelectedListener { position ->
+                viewModel.onSelectedMonthPositionChange(position)
+                setUpDaySpinner()
+            }
+            monthSpinner.setOnTouchListener(provideOnTouchEventListener())
 
             overallBarChart.config()
             menuItemBarChart.config()
         }
-
+        super.onStart()
         viewModel.selectedPhasePositionLiveData.observe(viewLifecycleOwner){
             when(it){
-                2 -> {
+                0 -> {
                     binding.apply {
-                        daySpinner.visibility = View.INVISIBLE
-                        monthSpinner.visibility = View.INVISIBLE
+                        daySpinner.visibility = View.VISIBLE
+                        monthSpinner.visibility = View.VISIBLE
                         yearSpinner.visibility = View.VISIBLE
                     }
                 }
@@ -95,22 +107,22 @@ class RevenueFragment : Fragment() {
                         yearSpinner.visibility = View.VISIBLE
                     }
                 }
-                0 -> {
+                2 -> {
                     binding.apply {
-                        daySpinner.visibility = View.VISIBLE
-                        monthSpinner.visibility = View.VISIBLE
+                        daySpinner.visibility = View.INVISIBLE
+                        monthSpinner.visibility = View.INVISIBLE
                         yearSpinner.visibility = View.VISIBLE
                     }
                 }
             }
         }
-        viewModel.revenueData.observe(viewLifecycleOwner){
+        viewModel.revenueUiState.observe(viewLifecycleOwner){
             binding.progressHorizontal.visibility = if(it.isLoading) View.VISIBLE else View.INVISIBLE
             it.message?.let { message ->
                 when(message){
                     Message.NO_INTERNET_CONNECTION -> showToast(getString(R.string.no_internet_connection))
                     Message.SERVER_BREAKDOWN -> showToast(getString(R.string.server_breakdown))
-                    Message.BAD_REQUEST -> showToast(getString(R.string.bad_request))
+                    Message.LOAD_ERROR -> showToast(getString(R.string.load_error))
                     else -> throw IllegalStateException()
                 }
                 viewModel.messageShown()
@@ -140,6 +152,7 @@ class RevenueFragment : Fragment() {
                 }
             }
         }
+
         viewModel.menuItemRevenue.observe(viewLifecycleOwner){
             it?.let{
                 val random = Random
@@ -167,14 +180,13 @@ class RevenueFragment : Fragment() {
                     adapter = provideSpinnerAdapter(it)
                     setSelection(viewModel.selectedMenuItemPosition)
                     onItemSelectedListener = provideOnItemSelectedListener {
-                        position -> viewModel.onMenuItemChange(position)
+                            position -> viewModel.onMenuItemChange(position)
                     }
+                    setOnTouchListener(provideOnTouchEventListener())
                 }
-
             }
         }
-        viewModel.getCategories()
-        viewModel.getRevenues()
+        viewModel.initialCall()
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -194,11 +206,21 @@ class RevenueFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                callback.invoke(position)
+               if(isFromUser){
+                   callback.invoke(position)
+                   isFromUser = false
+               }
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                isFromUser = false
+            }
         }
+    }
+    @SuppressLint("ClickableViewAccessibility")
+    private fun provideOnTouchEventListener() = View.OnTouchListener { _, event ->
+        if(event.action == MotionEvent.ACTION_DOWN)
+            isFromUser = true
+        false
     }
     private fun getDaysOfMonth(month : Int,year : Int) : Int{
         calendar.set(Calendar.DAY_OF_MONTH,1)
@@ -223,4 +245,5 @@ class RevenueFragment : Fragment() {
             daySpinner.setSelection(position)
         }
     }
+
 }

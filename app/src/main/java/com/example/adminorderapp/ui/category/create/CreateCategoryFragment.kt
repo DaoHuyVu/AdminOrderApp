@@ -42,7 +42,7 @@ class CreateCategoryFragment : Fragment(){
             binding.progressBar.visibility = if(it.isLoading) View.VISIBLE else View.GONE
             it.message?.let { message ->
                 when(message){
-                    Message.BAD_REQUEST -> showToast(getString(R.string.add_failed))
+                    Message.LOAD_ERROR -> showToast(getString(R.string.add_failed))
                     Message.NO_INTERNET_CONNECTION -> showToast(getString(R.string.no_internet_connection))
                     Message.SERVER_BREAKDOWN -> showToast(getString(R.string.server_breakdown))
                     else -> throw IllegalStateException()

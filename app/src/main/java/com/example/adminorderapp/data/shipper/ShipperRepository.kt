@@ -31,7 +31,7 @@ class ShipperRepository @Inject constructor(
                     ApiResult.Success(response.body()!!.map { shipper -> shipper.toStaffUiView()})
                 }
                 else if(response.code() in 400 .. 500 ){
-                    ApiResult.Error(Message.BAD_REQUEST)
+                    ApiResult.Error(Message.LOAD_ERROR)
                 }
                 else ApiResult.Error(Message.SERVER_BREAKDOWN)
             }catch(ex : UnknownHostException){
@@ -50,7 +50,7 @@ class ShipperRepository @Inject constructor(
                     ApiResult.Success(response.body()!!)
                 }
                 else if(response.code() in 400 .. 500 ){
-                    ApiResult.Error(Message.BAD_REQUEST)
+                    ApiResult.Error(Message.LOAD_ERROR)
                 }
                 else ApiResult.Error(Message.SERVER_BREAKDOWN)
             }catch(ex : UnknownHostException){
@@ -69,7 +69,7 @@ class ShipperRepository @Inject constructor(
                     ApiResult.Success(shipperList.toList().map{shipper -> shipper.toStaffUiView()})
                 }
                 else if(response.code() in 400 .. 500 ){
-                    ApiResult.Error(Message.BAD_REQUEST)
+                    ApiResult.Error(Message.LOAD_ERROR)
                 }
                 else ApiResult.Error(Message.SERVER_BREAKDOWN)
             }catch(ex : UnknownHostException){
@@ -90,7 +90,7 @@ class ShipperRepository @Inject constructor(
                     ApiResult.Success(response.body()!!)
                 }
                 else if(response.code() in 400 .. 500 ){
-                    ApiResult.Error(Message.BAD_REQUEST)
+                    ApiResult.Error(Message.LOAD_ERROR)
                 }
                 else ApiResult.Error(Message.SERVER_BREAKDOWN)
             }catch(ex : UnknownHostException){

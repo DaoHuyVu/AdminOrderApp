@@ -32,7 +32,7 @@ class MenuItemRepository @Inject constructor(
                     ApiResult.Success(menuItemList.toList().map { item -> item.toMenuItemUiView()})
                 }
                 else if(response.code() in 400 .. 500 ){
-                    ApiResult.Error(Message.BAD_REQUEST)
+                    ApiResult.Error(Message.LOAD_ERROR)
                 }
                 else ApiResult.Error(Message.SERVER_BREAKDOWN)
             }catch(ex : UnknownHostException){
@@ -51,7 +51,7 @@ class MenuItemRepository @Inject constructor(
                     ApiResult.Success(response.body()!!)
                 }
                 else if(response.code() in 400 .. 500 ){
-                    ApiResult.Error(Message.BAD_REQUEST)
+                    ApiResult.Error(Message.LOAD_ERROR)
                 }
                 else ApiResult.Error(Message.SERVER_BREAKDOWN)
             }catch(ex : UnknownHostException){
@@ -71,7 +71,7 @@ class MenuItemRepository @Inject constructor(
                     ApiResult.Success(menuItemList.toList().map{item -> item.toMenuItemUiView()})
                 }
                 else if(response.code() in 400 .. 500 ){
-                    ApiResult.Error(Message.BAD_REQUEST)
+                    ApiResult.Error(Message.LOAD_ERROR)
                 }
                 else ApiResult.Error(Message.SERVER_BREAKDOWN)
             }catch(ex : UnknownHostException){
@@ -92,7 +92,7 @@ class MenuItemRepository @Inject constructor(
                     ApiResult.Success(response.body()!!)
                 }
                 else if(response.code() in 400 .. 500 ){
-                    ApiResult.Error(Message.BAD_REQUEST)
+                    ApiResult.Error(Message.LOAD_ERROR)
                 }
                 else ApiResult.Error(Message.SERVER_BREAKDOWN)
             }catch(ex : UnknownHostException){

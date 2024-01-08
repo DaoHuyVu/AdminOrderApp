@@ -1,6 +1,5 @@
 package com.example.adminorderapp.data.manager
 
-import android.util.Log
 import com.example.adminorderapp.util.Message
 import com.example.adminorderapp.api.ApiResult
 import com.example.adminorderapp.api.dispatchers.IODispatcher
@@ -32,7 +31,7 @@ class ManagerRepository @Inject constructor(
                     managerList = LinkedList(response.body()!!)
                     ApiResult.Success(response.body()!!.map { manager -> manager.toStaffUiView()})
                 }
-                else if(response.code() in 400 until 500) ApiResult.Error(Message.BAD_REQUEST)
+                else if(response.code() in 400 until 500) ApiResult.Error(Message.LOAD_ERROR)
                 else ApiResult.Error(Message.SERVER_BREAKDOWN)
             }catch(ex : UnknownHostException){
                 ApiResult.Error(Message.NO_INTERNET_CONNECTION)
@@ -50,7 +49,7 @@ class ManagerRepository @Inject constructor(
                     managerList.add(response.body()!!)
                     ApiResult.Success(response.body()!!)
                 }
-                else if(response.code() in 400 until 500) ApiResult.Error(Message.BAD_REQUEST)
+                else if(response.code() in 400 until 500) ApiResult.Error(Message.LOAD_ERROR)
                 else ApiResult.Error(Message.SERVER_BREAKDOWN)
             }catch(ex : UnknownHostException){
                 ApiResult.Error(Message.NO_INTERNET_CONNECTION)
@@ -67,7 +66,7 @@ class ManagerRepository @Inject constructor(
                     managerList.remove(response.body()!!)
                     ApiResult.Success(managerList.toList().map { staff -> staff.toStaffUiView() })
                 }
-                else if(response.code() in 400 until 500) ApiResult.Error(Message.BAD_REQUEST)
+                else if(response.code() in 400 until 500) ApiResult.Error(Message.LOAD_ERROR)
                 else ApiResult.Error(Message.SERVER_BREAKDOWN)
             }
             catch(ex : UnknownHostException){
@@ -87,7 +86,7 @@ class ManagerRepository @Inject constructor(
                     managerList[index] = response.body()!!
                     ApiResult.Success(response.body()!!)
                 }
-                else if(response.code() in 400 until 500) ApiResult.Error(message = Message.BAD_REQUEST)
+                else if(response.code() in 400 until 500) ApiResult.Error(message = Message.LOAD_ERROR)
                 else ApiResult.Error(Message.SERVER_BREAKDOWN)
             }catch(ex : UnknownHostException){
                 ApiResult.Error(Message.NO_INTERNET_CONNECTION)

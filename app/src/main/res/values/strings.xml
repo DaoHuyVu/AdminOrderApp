@@ -116,7 +116,7 @@
         <item>11</item>
         <item>12</item>
     </integer-array>
-    <string name="bad_request">Bad request</string>
+    <string name="load_error">Load error</string>
     <string name="logout_message">Do you really want to logout?</string>
     <string name="cancel_label">Cancel</string>
     <string name="yes_label">Yes</string>
