@@ -40,9 +40,6 @@
         <action
             android:id="@+id/action_homeFragment_to_storeDetailsFragment"
             app:destination="@id/storeDetailsFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_storeRevenueFragment2"
-            app:destination="@id/storeRevenueFragment" />
     </fragment>
     <fragment
         android:id="@+id/createManagerFragment"
@@ -109,15 +106,6 @@
         android:name="com.example.adminorderapp.ui.store.details.StoreDetailsFragment"
         android:label="Store Details"
         tools:layout="@layout/fragment_store_details" >
-        <argument
-            android:name="id"
-            app:argType="long" />
-    </fragment>
-    <fragment
-        android:id="@+id/storeRevenueFragment"
-        android:name="com.example.adminorderapp.ui.revenue.StoreRevenueFragment"
-        android:label="Store revenue"
-        tools:layout="@layout/fragment_store_revenue" >
         <argument
             android:name="id"
             app:argType="long" />

@@ -12,7 +12,6 @@ import androidx.fragment.app.DialogFragment
 class DatePickerDialogFragment(
     private val dateSetCallback : (Int,Int,Int) -> Unit
 ) : DialogFragment(), DatePickerDialog.OnDateSetListener{
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)

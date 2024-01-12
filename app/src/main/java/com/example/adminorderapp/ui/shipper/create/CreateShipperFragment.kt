@@ -75,7 +75,7 @@ class CreateShipperFragment : Fragment() {
             datePickerButton.setOnClickListener {
                 DatePickerDialogFragment{ year,month,dayOfMonth ->
                     //Month start with 0
-                    val text = getString(R.string.date_of_birth_display,dayOfMonth,month+1,year)
+                    val text = getString(R.string.date_display,dayOfMonth,month+1,year)
                     dateOfBirth.text = text
                     viewModel.dateOfBirthChange(text)
                 }.show(parentFragmentManager,"datePicker")

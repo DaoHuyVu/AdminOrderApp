@@ -23,7 +23,6 @@ interface CategoryService {
     @PUT("admin/category/{id}")
     @FormUrlEncoded
     suspend fun updateCategory(@Path("id") id : Long,@FieldMap fields : Map<String,String>) : Response<Category>
-    @PATCH("admin/category/{id}")
-    @FormUrlEncoded
-    suspend fun updateCategory(@Path("id") id : Long,@Field("fields") fields : String) : Response<Category>
+
+
 }

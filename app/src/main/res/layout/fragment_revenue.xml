@@ -20,65 +20,80 @@
             android:visibility="invisible"/>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:context=".ui.revenue.RevenueFragment">
-
+            android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/from_label"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="@string/by"
+                android:layout_height="0dp"
+                android:padding="8dp"
+                android:text="@string/from_label"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/by_phase_spinner" />
-
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/by_phase_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                app:layout_constraintStart_toEndOf="@+id/textView"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/year_spinner"
+            <TextView
+                android:id="@+id/from"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:padding="16dp"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/by_phase_spinner" />
+                android:padding="8dp"
+                android:text="dd/MM/yyyy"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                app:drawableEndCompat="@drawable/baseline_calendar_month_24"
+                app:layout_constraintStart_toEndOf="@+id/from_label"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/month_spinner"
+            <TextView
+                android:id="@+id/to_label"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:padding="8dp"
+                android:text="@string/to_label"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/to"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/to"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toStartOf="@+id/year_spinner"
-                app:layout_constraintTop_toTopOf="@+id/year_spinner" />
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/day_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toStartOf="@+id/month_spinner"
-                app:layout_constraintTop_toTopOf="@+id/month_spinner" />
+                android:padding="8dp"
+                android:drawablePadding="8dp"
+                android:text="dd/MM/yyyy"
+                android:gravity="center"
+                app:drawableEndCompat="@drawable/baseline_calendar_month_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".ui.revenue.RevenueFragment">
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/overall_bar_chart"
                 android:layout_width="match_parent"
                 android:layout_height="500dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/overall_revenue"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/year_spinner"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/overall_revenue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="@string/total"
+                android:textStyle="bold"
+                android:padding="8dp"
+                android:gravity="end"
+                android:textAppearance="?textAppearanceTitleLarge"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -109,11 +124,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="500dp"
                 android:layout_marginTop="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/menu_item_revenue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/menu_item_spinner" />
-
+            <TextView
+                android:id="@+id/menu_item_revenue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="@string/total"
+                android:textStyle="bold"
+                android:padding="8dp"
+                android:gravity="end"
+                android:textAppearance="?textAppearanceTitleLarge"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 

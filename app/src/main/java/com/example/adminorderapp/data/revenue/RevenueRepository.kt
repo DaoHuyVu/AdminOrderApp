@@ -16,10 +16,10 @@ class RevenueRepository @Inject constructor(
     private val revenueService: RevenueService,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
-    suspend fun getRevenues(day : Int? = null,month : Int? = null,year : Int,category : String? = null) : ApiResult<List<Revenue>>{
+    suspend fun getRevenues(from : String,to : String,menuItem : String? = null) : ApiResult<List<Revenue>>{
         return withContext(ioDispatcher){
             try {
-                val response = revenueService.getRevenue(day,month,year, category)
+                val response = revenueService.getRevenue(from,to,menuItem)
                 if(response.isSuccessful)
                     ApiResult.Success(response.body()!!)
                 else if(response.code() in 400 .. 500 ){

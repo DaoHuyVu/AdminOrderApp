@@ -5,11 +5,17 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface RevenueService {
+//    @GET("admin/revenue")
+//    suspend fun getRevenue(
+//        @Query("day") day : Int? = null,
+//        @Query("month") month : Int? = null,
+//        @Query("year") year : Int,
+//        @Query("category") category : String? = null
+//    ) : Response<List<Revenue>>
     @GET("admin/revenue")
     suspend fun getRevenue(
-        @Query("day") day : Int? = null,
-        @Query("month") month : Int? = null,
-        @Query("year") year : Int,
-        @Query("category") category : String? = null
+        @Query("from") from : String,
+        @Query("to") to : String,
+        @Query("menuItem") menuItem : String? = null
     ) : Response<List<Revenue>>
 }

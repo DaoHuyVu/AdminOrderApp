@@ -21,109 +21,57 @@ class RevenueViewModel @Inject constructor(
     private val menuItemRepository: MenuItemRepository
 ) : ViewModel(){
 
-    private val _selectedPhasePositionLiveData = MutableLiveData(0)
-    val selectedPhasePositionLiveData : LiveData<Int> get() = _selectedPhasePositionLiveData
-    val selectedPhasePosition get() =  selectedPhasePositionLiveData.value!!
-
     private val _menuItems = MutableLiveData(listOf<String>())
-
+    init{
+        viewModelScope.launch {
+            _menuItems.value = menuItemRepository.getMenuItemName()
+        }
+    }
     val menuItems : LiveData<List<String>> get() = _menuItems
 
     private val _menuItemRevenue = MutableLiveData(listOf<Revenue>())
+
     val menuItemRevenue : LiveData<List<Revenue>> get() = _menuItemRevenue
+
     var selectedMenuItemPosition = 0
         private set
+
     private val _revenueUiState = MutableLiveData(RevenueUiState())
 
     val revenueUiState : LiveData<RevenueUiState> get() = _revenueUiState
 
-    private val calendar = Calendar.getInstance()
-
-    var selectedYearPosition = 0
+    var from : String? = null
         private set
-    private val selectedYearValue get() =  calendar.get(Calendar.YEAR) - selectedYearPosition
-
-    var selectedMonthPosition = calendar.get(Calendar.MONTH)
+    var to : String? = null
         private set
-    private val selectedMonthValue get() =  selectedMonthPosition + 1
+    private var canMakeQuery = false
 
-    var selectedDayPosition = calendar.get(Calendar.DAY_OF_MONTH) - 1
-        private set
-    private val selectedDayValue get() =  selectedDayPosition + 1
-
-    fun initialCall(){
-        viewModelScope.launch {
-            _menuItems.value = menuItemRepository.getMenuItemName()
-            getRevenues()
-        }
-    }
-    fun onMenuItemChange(position : Int){
+    fun selectedMenuItemChange(position : Int){
         selectedMenuItemPosition = position
-        getMenuItemRevenues()
-    }
-    fun onPhasePositionChange(position : Int){
-        _selectedPhasePositionLiveData.value = position
-        getRevenues()
-    }
-    fun onSelectedYearPositionChange(position : Int){
-        selectedYearPosition = position
-        getRevenues()
-    }
-    fun onSelectedMonthPositionChange(position : Int){
-        selectedMonthPosition = position
-        getRevenues()
-    }
-    fun onSelectedDayPositionChange(position : Int){
-        selectedDayPosition = position
-        getRevenues()
+        if(canMakeQuery){
+            handleMenuItemRevenueCallback { revenueRepository.getRevenues(from!!,to!!,menuItems.value?.get(selectedMenuItemPosition)) }
+        }
     }
     fun messageShown(){
         _revenueUiState.value = _revenueUiState.value?.copy(message = null)
     }
-    fun getMenuItems(){
+    fun fromSelected(date : String){
+        from = date
+        canMakeQuery = from != null && to != null
+        if(canMakeQuery) {
+            handleRevenueCallback { revenueRepository.getRevenues(from!!,to!!) }
+            handleMenuItemRevenueCallback { revenueRepository.getRevenues(from!!,to!!,menuItems.value?.get(selectedMenuItemPosition)) }
+        }
+    }
+    fun toSelected(date : String){
+        to = date
+        canMakeQuery = from != null && to != null
+        if(canMakeQuery) {
+            handleRevenueCallback { revenueRepository.getRevenues(from!!,to!!) }
+            handleMenuItemRevenueCallback { revenueRepository.getRevenues(from!!,to!!,menuItems.value?.get(selectedMenuItemPosition)) }
+        }
+    }
 
-    }
-    fun getRevenues(){
-        when(selectedPhasePosition){
-            0 -> handleRevenueCallback{
-                    revenueRepository.getRevenues(
-                        selectedDayValue,
-                        selectedMonthValue,
-                        selectedYearValue)
-            }
-            1 -> handleRevenueCallback{
-                    revenueRepository.getRevenues(
-                        month = selectedMonthValue,
-                        year = selectedYearValue)
-                }
-            2 -> handleRevenueCallback{ revenueRepository.getRevenues(year = selectedYearValue) }
-        }
-        if(menuItems.value?.isNotEmpty() == true){
-            getMenuItemRevenues()
-        }
-    }
-    private fun getMenuItemRevenues(){
-       when(selectedPhasePosition){
-           0 -> handleMenuItemRevenueCallback {
-               revenueRepository.getRevenues(
-                   selectedDayValue,
-                   selectedMonthValue,
-                   selectedYearValue,
-                   _menuItems.value?.get(selectedMenuItemPosition))
-           }
-           1 -> handleMenuItemRevenueCallback {
-               revenueRepository.getRevenues(
-                   month = selectedMonthValue,
-                   year = selectedYearValue,
-                   category = _menuItems.value?.get(selectedMenuItemPosition))
-           }
-           2 -> handleMenuItemRevenueCallback {
-               revenueRepository.getRevenues(
-                   year = selectedYearValue,
-                   category = _menuItems.value?.get(selectedMenuItemPosition))
-           }
-       }
-    }
     private fun handleRevenueCallback(
         callback : suspend () -> ApiResult<List<Revenue>>
     ) {
