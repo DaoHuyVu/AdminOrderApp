@@ -15,6 +15,8 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.util.LinkedList
 
 class MenuItemDetailsViewModel @AssistedInject constructor(
@@ -33,6 +35,7 @@ class MenuItemDetailsViewModel @AssistedInject constructor(
             }
         }
     }
+    private var part : MultipartBody.Part? = null
     private val menuItem = menuItemRepository.getMenuItem(id)
     private val selectedCategory = LinkedList(menuItem.categories)
     val category get() = _category
@@ -55,8 +58,9 @@ class MenuItemDetailsViewModel @AssistedInject constructor(
     fun onDescriptionChange(d : String){
         description = d
     }
-    fun onUrlChange(url : String){
+    fun onImageSelected(url : String,p : MultipartBody.Part){
         imageUrl = url
+        part = p
     }
     fun onCategorySelected(category: Category){
         selectedCategory.add(category)
@@ -76,12 +80,11 @@ class MenuItemDetailsViewModel @AssistedInject constructor(
         if(name != menuItem.name) fields["name"] =  name
         if(price != menuItem.price) fields["price"] = price
         if(description != menuItem.description) fields["description"] = description
-        if(imageUrl != menuItem.imageUrl) fields["imageUrl"] = imageUrl
         if(isCategoriesChanged()) fields["categories"] = gson.toJson(selectedCategory)
-        val f = gson.toJson(fields)
+        val body = RequestBody.create(MultipartBody.FORM,gson.toJson(fields))
         viewModelScope.launch {
             _uiState.value = UiState(isLoading = true)
-            when(val result = menuItemRepository.updateMenuItem(id,f)){
+            when(val result = menuItemRepository.updateMenuItem(id,body,part)){
                 is ApiResult.Success -> _uiState.value = UiState(isSuccessful = true)
                 is ApiResult.Error -> _uiState.value = UiState(message = result.message)
                 is ApiResult.Exception -> _uiState.value = UiState(message = Message.SERVER_BREAKDOWN)

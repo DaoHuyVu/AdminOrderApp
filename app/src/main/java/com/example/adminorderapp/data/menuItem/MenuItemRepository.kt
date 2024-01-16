@@ -8,6 +8,8 @@ import com.example.adminorderapp.api.menuItem.MenuItem
 import com.example.adminorderapp.api.menuItem.MenuItemService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.net.UnknownHostException
 import java.util.LinkedList
 import javax.inject.Inject
@@ -42,10 +44,16 @@ class MenuItemRepository @Inject constructor(
             }
         }
     }
-    suspend fun addItem(fields : Map<String,String>) : ApiResult<MenuItem>{
+    suspend fun addItem(
+        name : RequestBody,
+        price : RequestBody,
+        description : RequestBody,
+        part : MultipartBody.Part,
+        categories : RequestBody,
+    ) : ApiResult<MenuItem>{
         return withContext(ioDispatcher){
             try{
-                val response = menuItemService.addMenuItem(fields)
+                val response = menuItemService.addMenuItem(name,price,description,part,categories)
                 if(response.isSuccessful){
                     menuItemList.add(response.body()!!)
                     ApiResult.Success(response.body()!!)
@@ -82,10 +90,14 @@ class MenuItemRepository @Inject constructor(
         }
     }
     fun getMenuItem(id : Long) = menuItemList.first{item -> item.id == id}
-    suspend fun updateMenuItem(id : Long,fields : String) : ApiResult<MenuItem>{
+    suspend fun updateMenuItem(
+        id : Long,
+        fields : RequestBody? = null,
+        image : MultipartBody.Part? = null
+    ) : ApiResult<MenuItem>{
         return withContext(ioDispatcher){
             try{
-                val response = menuItemService.updateMenuItem(id,fields)
+                val response = menuItemService.updateMenuItem(id,fields,image)
                 if(response.isSuccessful){
                     val index = menuItemList.indexOfFirst { item -> item.id == id }
                     menuItemList[index] = response.body()!!

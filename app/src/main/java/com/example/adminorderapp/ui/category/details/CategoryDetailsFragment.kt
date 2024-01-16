@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -12,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.adminorderapp.R
 import com.example.adminorderapp.databinding.FragmentCategoryDetailsBinding
 import com.example.adminorderapp.util.Message
+import com.example.adminorderapp.util.UriResolver
 import com.example.adminorderapp.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -37,8 +40,20 @@ class CategoryDetailsFragment : Fragment() {
         binding.apply {
             categoryName.setText(viewModel.name)
             categoryName.doOnTextChanged { text, _, _, _ -> viewModel.onNameChange(text.toString())}
-            categoryImageUrl.setText(viewModel.imageUrl)
-            categoryImageUrl.doOnTextChanged { text, _, _, _ -> viewModel.onUrlChange(text.toString())}
+            imageUri.text = viewModel.imageUrl
+            val launcher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){uri ->
+               uri?.let{
+                   val part = UriResolver.getPartFromUri(
+                       uri, requireActivity().contentResolver,
+                       categoryName.text.toString().lowercase()
+                   )
+                   viewModel.onImageChange(uri.toString(),part)
+                   imageUri.text = uri.toString()
+               }
+            }
+            imagepickerButton.setOnClickListener {
+                launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
             updateButton.setOnClickListener {
                 viewModel.updateItem()
             }

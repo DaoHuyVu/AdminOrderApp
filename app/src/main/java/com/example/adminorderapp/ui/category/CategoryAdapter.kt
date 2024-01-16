@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.adminorderapp.R
 import com.example.adminorderapp.api.category.Category
@@ -36,6 +37,8 @@ class CategoryAdapter(
                    .with(root)
                    .load(URL_PREFIX + category.imageUrl)
                    .error(android.R.drawable.stat_notify_error)
+                   .skipMemoryCache(true)
+                   .diskCacheStrategy(DiskCacheStrategy.NONE)
                    .transition(DrawableTransitionOptions.withCrossFade())
                    .into(categoryImage)
                root.setOnClickListener{ callback.invoke(category.id,category.name) }

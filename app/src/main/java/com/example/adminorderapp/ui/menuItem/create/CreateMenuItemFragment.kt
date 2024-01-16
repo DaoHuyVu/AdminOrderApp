@@ -8,12 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.adminorderapp.R
 import com.example.adminorderapp.databinding.FragmentCreateMenuItemBinding
 import com.example.adminorderapp.util.Message
+import com.example.adminorderapp.util.UriResolver
 import com.example.adminorderapp.util.showToast
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,11 +45,21 @@ class CreateMenuItemFragment : Fragment() {
             itemDescription.doOnTextChanged {
                     text, _, _, _ -> viewModel.onDescriptionChange(text.toString())
             }
-            itemUrl.setText(viewModel.imageUrl)
-            itemUrl.doOnTextChanged {
-                    text, _, _, _ -> viewModel.onUrlChange(text.toString())
+            imageUri.text = viewModel.imageUri
+            val launcher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){uri ->
+                uri?.let{
+                    imageUri.text = uri.toString()
+                    val part = UriResolver.getPartFromUri(
+                        uri,
+                        requireActivity().contentResolver,
+                        itemName.text.toString().lowercase()
+                    )
+                    viewModel.onImageSelected(uri.toString(),part)
+                }
             }
-
+            imagePickerButton.setOnClickListener {
+                launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
         }
         viewModel.uiState.observe(viewLifecycleOwner){
             binding.progressBar.visibility = if(it.isLoading) View.VISIBLE else View.GONE

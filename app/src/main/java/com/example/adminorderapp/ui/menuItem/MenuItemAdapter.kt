@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.adminorderapp.R
 import com.example.adminorderapp.util.URL_PREFIX
@@ -34,6 +35,8 @@ class MenuItemAdapter(
                 .with(binding.root)
                 .load(URL_PREFIX + menuItem.imageUrl)
                 .transition(DrawableTransitionOptions.withCrossFade())
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .error(android.R.drawable.stat_notify_error)
                 .into(binding.menuItemImage)
             binding.root.setOnClickListener {

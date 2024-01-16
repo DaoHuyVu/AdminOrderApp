@@ -66,23 +66,30 @@
                 android:lines="5"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout5"
+        <LinearLayout
+            android:id="@+id/image_picker_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            app:endIconMode="clear_text"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout4">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/item_url"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/image_url"
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/image_uri"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="content://example.com"
+                android:paddingHorizontal="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"/>
+            <Button
+                android:id="@+id/image_picker_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/picker_label"/>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/choose_a_category"
@@ -92,7 +99,7 @@
             android:layout_marginTop="16dp"
             android:text="Choose a category"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout5" />
+            app:layout_constraintTop_toBottomOf="@+id/image_picker_container" />
 
         <HorizontalScrollView
             android:id="@+id/horizontal_scroll_view"

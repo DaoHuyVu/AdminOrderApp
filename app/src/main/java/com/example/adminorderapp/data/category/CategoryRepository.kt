@@ -1,5 +1,6 @@
 package com.example.adminorderapp.data.category
 
+import android.util.Log
 import com.example.adminorderapp.api.ApiResult
 import com.example.adminorderapp.api.category.Category
 import com.example.adminorderapp.api.category.CategoryService
@@ -7,6 +8,8 @@ import com.example.adminorderapp.api.dispatchers.IODispatcher
 import com.example.adminorderapp.util.Message
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.net.UnknownHostException
 import java.util.LinkedList
 import javax.inject.Inject
@@ -44,10 +47,10 @@ class CategoryRepository @Inject constructor(
         }
         return ApiResult.Success(categories!!.toList())
     }
-    suspend fun addCategory(fields : Map<String,String>) : ApiResult<Category>{
+    suspend fun addCategory(name : RequestBody,image : MultipartBody.Part) : ApiResult<Category>{
         return withContext(ioDispatcher){
             try{
-                val response = categoryService.addCategory(fields)
+                val response = categoryService.addCategory(name,image)
                 if(response.isSuccessful){
                     categories?.add(response.body()!!)
                     ApiResult.Success(response.body()!!)
@@ -59,7 +62,7 @@ class CategoryRepository @Inject constructor(
             }catch(ex : UnknownHostException){
                 ApiResult.Error(Message.NO_INTERNET_CONNECTION)
             }catch (ex : Exception){
-                ApiResult.Exception(ex)
+                ApiResult.Exception(ex).also{ Log.e("Test",it.toString())}
             }
         }
     }
@@ -82,10 +85,10 @@ class CategoryRepository @Inject constructor(
             }
         }
     }
-    suspend fun updateCategory(id : Long,fields : Map<String,String>) : ApiResult<Category>{
+    suspend fun updateCategory(id : Long,categoryName : RequestBody? = null,part : MultipartBody.Part? = null) : ApiResult<Category>{
         return withContext(ioDispatcher){
             try{
-                val response = categoryService.updateCategory(id,fields)
+                val response = categoryService.updateCategory(id,categoryName,part)
                 if(response.isSuccessful){
                     val category = response.body()!!
                     val index = categories!!.indexOfFirst { c -> c.id == category.id }

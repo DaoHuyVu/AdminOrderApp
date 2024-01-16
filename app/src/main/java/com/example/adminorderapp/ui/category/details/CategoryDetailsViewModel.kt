@@ -12,6 +12,9 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.MultipartBody.Part
+import okhttp3.RequestBody
 
 class CategoryDetailsViewModel @AssistedInject constructor(
     @Assisted private val id : Long,
@@ -24,23 +27,23 @@ class CategoryDetailsViewModel @AssistedInject constructor(
         private set
     var imageUrl = category.imageUrl
         private set
-
+    private var part : Part? = null
     fun onNameChange(n : String){
         name = n
     }
-    fun onUrlChange(url : String){
+    fun onImageChange(url : String,p: Part){
         imageUrl = url
+        part = p
     }
+
     fun messageShown(){
         _uiState.value = UiState()
     }
     fun updateItem(){
-        val fields = hashMapOf<String,String>()
-        fields["name"] =  name
-        fields["imageUrl"] = imageUrl
+        val body = RequestBody.create(MultipartBody.FORM,name)
         viewModelScope.launch {
             _uiState.value = UiState(isLoading = true)
-            when(val result = categoryRepository.updateCategory(id,fields)){
+            when(val result = categoryRepository.updateCategory(id,body,part)){
                 is ApiResult.Success -> _uiState.value = UiState(isSuccessful = true)
                 is ApiResult.Error -> _uiState.value = UiState(message = result.message)
                 is ApiResult.Exception -> _uiState.value = UiState(message = Message.SERVER_BREAKDOWN)

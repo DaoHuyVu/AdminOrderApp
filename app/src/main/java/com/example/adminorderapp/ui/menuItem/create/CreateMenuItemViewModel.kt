@@ -1,5 +1,6 @@
 package com.example.adminorderapp.ui.menuItem.create
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +13,8 @@ import com.example.adminorderapp.util.Message
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.util.LinkedList
 import javax.inject.Inject
 
@@ -31,6 +34,8 @@ class CreateMenuItemViewModel @Inject constructor(
             }
         }
     }
+    private val _canMakeQuery = MutableLiveData(false)
+    val canMakeQuery : LiveData<Boolean> get() = _canMakeQuery
     private val selectedCategory = LinkedList<Category>()
     val category get() = _category
     val uiState get() = _uiState
@@ -40,9 +45,9 @@ class CreateMenuItemViewModel @Inject constructor(
         private set
     var description = ""
         private set
-    var imageUrl = ""
+    var imageUri = ""
         private set
-
+    private var part : MultipartBody.Part? = null
     fun onNameChange(n : String){
         name = n
     }
@@ -52,8 +57,9 @@ class CreateMenuItemViewModel @Inject constructor(
     fun onDescriptionChange(d : String){
         description = d
     }
-    fun onUrlChange(url : String){
-        imageUrl = url
+    fun onImageSelected(uri : String,p : MultipartBody.Part){
+        imageUri = uri
+        part = p
     }
     fun onCategorySelected(category: Category){
         selectedCategory.add(category)
@@ -67,17 +73,17 @@ class CreateMenuItemViewModel @Inject constructor(
     fun messageShown(){
         _uiState.value = UiState()
     }
+
     fun addItem(){
         val gson = Gson()
-        val fields = hashMapOf<String,String>()
-        fields["name"] =  name
-        fields["price"] = price
-        fields["description"] = description
-        fields["imageUrl"] = imageUrl
-        fields["categories"] = gson.toJson(selectedCategory)
+        val nameBody = RequestBody.create(MultipartBody.FORM,name)
+        val descriptionBody = RequestBody.create(MultipartBody.FORM,description)
+        val priceBody  = RequestBody.create(MultipartBody.FORM,price)
+        val categoriesBody = RequestBody.create(MultipartBody.FORM,gson.toJson(selectedCategory))
+
         viewModelScope.launch {
             _uiState.value = UiState(isLoading = true)
-            when(val result = menuItemRepository.addItem(fields)){
+            when(val result = menuItemRepository.addItem(nameBody,priceBody,descriptionBody,part!!,categoriesBody)){
                 is ApiResult.Success -> _uiState.value = UiState(isSuccessful = true)
                 is ApiResult.Error -> _uiState.value = UiState(message = result.message)
                 is ApiResult.Exception -> _uiState.value = UiState(message = Message.SERVER_BREAKDOWN)
