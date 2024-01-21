@@ -9,14 +9,6 @@ class BottomSheetDialogFragmentManager private constructor() {
     ) : OptionBottomSheetDialogFragment{
         return OptionBottomSheetDialogFragment(name,details,delete)
     }
-    fun getRevenueDialog(
-        name : String,
-        details : () -> Unit,
-        navigateStoreRevenue : () -> Unit,
-        delete : () -> Unit
-    )  : RevenueBottomSheetDialogFragment{
-        return RevenueBottomSheetDialogFragment(name,details,navigateStoreRevenue,delete)
-    }
     companion object {
         @Volatile
         private var manager : BottomSheetDialogFragmentManager? = null

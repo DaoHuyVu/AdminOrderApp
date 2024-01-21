@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.adminorderapp.api.ApiResult
-import com.example.adminorderapp.data.manager.ManagerRepository
+import com.example.adminorderapp.data.staff.StaffRepository
 import com.example.adminorderapp.ui.UiState
 import com.example.adminorderapp.util.Message
 import com.google.gson.Gson
@@ -16,10 +16,10 @@ import kotlinx.coroutines.launch
 
 class ManagerDetailsViewModel @AssistedInject constructor(
     @Assisted private val id : Long,
-    private val managerRepository: ManagerRepository
+    private val staffRepository: StaffRepository
 ) : ViewModel(){
     private val _uiState = MutableLiveData(UiState())
-    private val manager = managerRepository.getManager(id)
+    private val manager = staffRepository.getManager(id)
     val uiState get() = _uiState
     var email = manager.email
         private set
@@ -72,7 +72,7 @@ class ManagerDetailsViewModel @AssistedInject constructor(
         val fields = gson.toJson(map)
         _uiState.value = _uiState.value?.copy(isLoading = true)
         viewModelScope.launch {
-            when(val result = managerRepository.updateManager(id,fields)){
+            when(val result = staffRepository.updateStaff(id,fields)){
                 is ApiResult.Success -> _uiState.value = _uiState.value?.copy(isSuccessful = true, isLoading = false)
                 is ApiResult.Error -> _uiState.value = _uiState.value?.copy(message = result.message, isLoading = false)
                 is ApiResult.Exception -> _uiState.value = _uiState.value?.copy(message = Message.SERVER_BREAKDOWN, isLoading = false)

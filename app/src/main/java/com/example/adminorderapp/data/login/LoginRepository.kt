@@ -2,7 +2,6 @@ package com.example.adminorderapp.data.login
 
 import com.example.adminorderapp.util.DataStoreUtil
 import com.example.adminorderapp.util.Message
-import com.example.adminorderapp.util.ROLE
 import com.example.adminorderapp.api.ApiResult
 import com.example.adminorderapp.api.login.AuthResponse
 import com.example.adminorderapp.api.login.AuthService
@@ -22,14 +21,10 @@ class LoginRepository @Inject constructor(
         val response = authService.login(fields)
         return try{
             if(response.isSuccessful){
-               if(response.body()!!.role[0] != ROLE)
-                   ApiResult.Error(Message.LOAD_ERROR)
-                else{
-                   dataStoreUtil.saveUserInfo(response.body()!!.accessToken)
-                   ApiResult.Success(response.body()!!)
-               }
+                dataStoreUtil.saveUserInfo(response.body()!!.accessToken)
+                ApiResult.Success(response.body()!!)
             }
-            else if(response.code() == 403) ApiResult.Error(Message.LOAD_ERROR)
+            else if(response.code() in 400 until 500) ApiResult.Error(Message.LOGIN_FAILED)
             else ApiResult.Error(Message.SERVER_BREAKDOWN)
         }catch(ex : UnknownHostException){
             ApiResult.Error(Message.NO_INTERNET_CONNECTION)

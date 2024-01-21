@@ -7,8 +7,10 @@ import com.example.adminorderapp.api.store.Store
 import com.example.adminorderapp.api.store.StoreService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
 import java.net.UnknownHostException
 import java.util.LinkedList
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,7 +20,6 @@ class StoreRepository @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
     private var storeList = LinkedList<Store>()
-    private var unManagedStores = LinkedList<Store>()
     fun getAllStoreUiView() : List<StoreUiView>{
         return storeList.map{store -> store.toStoreUiView()}
     }
@@ -40,24 +41,7 @@ class StoreRepository @Inject constructor(
             }
         }
     }
-    suspend fun fetchUnManagedStoreUiViewList(isManaged : Boolean) : ApiResult<List<StoreUiView>> {
-        return withContext(ioDispatcher) {
-            try {
-                val response = storeService.getAllStore(isManaged)
-                if (response.isSuccessful) {
-                    unManagedStores = LinkedList(response.body()!!)
-                    ApiResult.Success(response.body()!!.map { store -> store.toStoreUiView() })
-                } else if(response.code() in 400 .. 500 ){
-                    ApiResult.Error(Message.LOAD_ERROR)
-                }
-                else ApiResult.Error(Message.SERVER_BREAKDOWN)
-            }catch(ex : UnknownHostException){
-                ApiResult.Error(Message.NO_INTERNET_CONNECTION)
-            }catch (ex : Exception){
-                ApiResult.Exception(ex)
-            }
-        }
-    }
+
     suspend fun addStore(fields : Map<String,String>) : ApiResult<Store>{
         return withContext(ioDispatcher){
             try{

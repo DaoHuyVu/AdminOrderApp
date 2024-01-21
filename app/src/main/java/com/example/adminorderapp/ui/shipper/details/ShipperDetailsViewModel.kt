@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.adminorderapp.api.ApiResult
-import com.example.adminorderapp.data.shipper.ShipperRepository
+import com.example.adminorderapp.data.staff.StaffRepository
 import com.example.adminorderapp.ui.UiState
 import com.example.adminorderapp.util.Message
 import com.google.gson.Gson
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class ShipperDetailsViewModel @AssistedInject constructor(
     @Assisted private val id : Long,
-    private val shipperRepository: ShipperRepository
+    private val shipperRepository: StaffRepository
 ) : ViewModel(){
     private val _uiState = MutableLiveData(UiState())
     private val shipper = shipperRepository.getShipper(id)
@@ -71,7 +71,7 @@ class ShipperDetailsViewModel @AssistedInject constructor(
         val fields = gson.toJson(map)
         _uiState.value = _uiState.value?.copy(isLoading = true)
         viewModelScope.launch {
-            when(val result = shipperRepository.updateShipper(id,fields)){
+            when(val result = shipperRepository.updateStaff(id,fields)){
                 is ApiResult.Success -> _uiState.value = _uiState.value?.copy(isSuccessful = true, isLoading = false)
                 is ApiResult.Error -> _uiState.value = _uiState.value?.copy(message = result.message, isLoading = false)
                 is ApiResult.Exception -> _uiState.value = _uiState.value?.copy(message = Message.SERVER_BREAKDOWN, isLoading = false)

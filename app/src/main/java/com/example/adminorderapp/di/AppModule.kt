@@ -5,11 +5,9 @@ import com.example.adminorderapp.api.TokenInterceptor
 import com.example.adminorderapp.api.TokenInterceptorOkHttp
 import com.example.adminorderapp.api.category.CategoryService
 import com.example.adminorderapp.api.dispatchers.IODispatcher
-import com.example.adminorderapp.api.manager.ManagerService
+import com.example.adminorderapp.api.staff.StaffService
 import com.example.adminorderapp.api.menuItem.MenuItemService
-import com.example.adminorderapp.api.revenue.Revenue
 import com.example.adminorderapp.api.revenue.RevenueService
-import com.example.adminorderapp.api.shipper.ShipperService
 import com.example.adminorderapp.api.store.StoreService
 import dagger.Module
 import dagger.Provides
@@ -56,12 +54,7 @@ object AppModule {
     @Singleton
     fun provideManagerService(
         retrofit: Retrofit
-    ) : ManagerService = retrofit.create(ManagerService::class.java)
-    @Provides
-    @Singleton
-    fun provideShipperService(
-        retrofit: Retrofit
-    ) : ShipperService = retrofit.create(ShipperService::class.java)
+    ) : StaffService = retrofit.create(StaffService::class.java)
     @Provides
     @Singleton
     fun provideStoreService(

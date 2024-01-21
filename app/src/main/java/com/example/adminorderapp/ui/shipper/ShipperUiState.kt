@@ -1,7 +1,7 @@
 package com.example.adminorderapp.ui.shipper
 
 import com.example.adminorderapp.util.Message
-import com.example.adminorderapp.api.manager.StaffUiView
+import com.example.adminorderapp.api.staff.StaffUiView
 
 data class ShipperUiState(
     val isLoading : Boolean = false,

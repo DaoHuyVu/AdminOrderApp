@@ -5,15 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.adminorderapp.util.Message
 import com.example.adminorderapp.api.ApiResult
-import com.example.adminorderapp.api.manager.StaffUiView
-import com.example.adminorderapp.data.shipper.ShipperRepository
+import com.example.adminorderapp.api.staff.StaffUiView
+import com.example.adminorderapp.data.staff.StaffRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ShipperViewModel @Inject constructor(
-    private val shipperRepository: ShipperRepository
+    private val staffRepository: StaffRepository
 ) : ViewModel(){
     private val _shipperUiState = MutableLiveData(ShipperUiState())
     init{
@@ -21,7 +21,7 @@ class ShipperViewModel @Inject constructor(
     }
     val managerUiState get() = _shipperUiState
     fun getShipperList(){
-        _shipperUiState.value = ShipperUiState(data = shipperRepository.getShipperUiViewList())
+        _shipperUiState.value = ShipperUiState(data = staffRepository.getShipperUiViewList())
     }
     private fun handleCallback(callback : suspend () -> ApiResult<List<StaffUiView>>){
         _shipperUiState.value = _shipperUiState.value?.copy(isLoading = true)
@@ -34,10 +34,10 @@ class ShipperViewModel @Inject constructor(
         }
     }
     fun fetchShipperList(){
-        handleCallback { shipperRepository.fetchShipperUiViewList() }
+        handleCallback { staffRepository.fetchShipperUiViewList() }
     }
     fun deleteShipper(id : Long){
-        handleCallback { shipperRepository.deleteShipper(id) }
+        handleCallback { staffRepository.deleteShipper(id) }
     }
     fun messageShown(){
         _shipperUiState.value = _shipperUiState.value?.copy(message = null)

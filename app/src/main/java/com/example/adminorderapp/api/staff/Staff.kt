@@ -1,9 +1,9 @@
-package com.example.adminorderapp.api.manager
+package com.example.adminorderapp.api.staff
 
 import com.example.adminorderapp.api.store.Address
 
 
-data class Manager(
+data class Staff(
     val id : Long,
     val name : String,
     val email : String,

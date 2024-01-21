@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.adminorderapp.api.ApiResult
-import com.example.adminorderapp.data.manager.ManagerRepository
+import com.example.adminorderapp.data.staff.StaffRepository
 import com.example.adminorderapp.data.store.StoreRepository
 import com.example.adminorderapp.data.store.StoreUiView
 import com.example.adminorderapp.ui.UiState
@@ -15,12 +15,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateManagerViewModel @Inject constructor(
-    private val managerRepository: ManagerRepository,
+    private val staffRepository: StaffRepository,
     private val storeRepository: StoreRepository
 ) : ViewModel(){
     private val _uiState = MutableLiveData(UiState())
     init{
-        handleCallback{ storeRepository.fetchUnManagedStoreUiViewList(isManaged = false) }
+        handleCallback{ storeRepository.fetchStoreUiViewList() }
     }
     private val _stores = MutableLiveData<List<StoreUiView>?>()
     val stores get() = _stores
@@ -85,9 +85,10 @@ class CreateManagerViewModel @Inject constructor(
         map["dateOfBirth"] = dateOfBirth
         map["gender"] = genderName
         map["storeId"] = _stores.value!![storePosition].id.toString()
+        map["role"] = "ROLE_MANAGER"
         _uiState.value = _uiState.value?.copy(isLoading = true)
         viewModelScope.launch {
-            when(val result = managerRepository.addManager(map)){
+            when(val result = staffRepository.addStaff(map)){
                 is ApiResult.Success -> _uiState.value = _uiState.value?.copy(isSuccessful = true, isLoading = false)
                 is ApiResult.Error -> _uiState.value = _uiState.value?.copy(message = result.message, isLoading = false)
                 is ApiResult.Exception -> _uiState.value = _uiState.value?.copy(message = Message.SERVER_BREAKDOWN, isLoading = false)

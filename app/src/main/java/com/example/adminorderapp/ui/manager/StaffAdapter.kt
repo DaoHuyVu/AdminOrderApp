@@ -1,14 +1,12 @@
 package com.example.adminorderapp.ui.manager
 
-import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.adminorderapp.R
-import com.example.adminorderapp.api.manager.StaffUiView
+import com.example.adminorderapp.api.staff.StaffUiView
 import com.example.adminorderapp.databinding.StaffItemLayoutBinding
 
 class StaffAdapter(

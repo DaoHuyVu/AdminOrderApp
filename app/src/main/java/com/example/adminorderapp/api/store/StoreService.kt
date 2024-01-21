@@ -14,15 +14,12 @@ import retrofit2.http.Query
 
 interface StoreService {
     @GET("/admin/store")
-    suspend fun getAllStore(@Query("isManaged") isManaged : Boolean? = null) : Response<List<Store>>
+    suspend fun getAllStore() : Response<List<Store>>
     @POST("/admin/store")
     @FormUrlEncoded
     suspend fun addStore(@FieldMap map : Map<String,String>) : Response<Store>
     @DELETE("/admin/store/{id}")
     suspend fun deleteStore(@Path("id") id : Long) : Response<Store>
-    @PUT("/admin/store/{id}")
-    @FormUrlEncoded
-    suspend fun updateStore(@Path("id") id : Long,@FieldMap map : Map<String,String>) : Response<Store>
     @PATCH("/admin/store/{id}")
     @FormUrlEncoded
     suspend fun updateStore(@Path("id") id : Long,@Field("fields") fields : String) : Response<Store>

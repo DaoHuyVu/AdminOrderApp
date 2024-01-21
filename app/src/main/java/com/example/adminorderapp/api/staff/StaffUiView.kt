@@ -1,4 +1,4 @@
-package com.example.adminorderapp.api.manager
+package com.example.adminorderapp.api.staff
 
 import com.example.adminorderapp.api.store.Address
 

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.adminorderapp.api.ApiResult
-import com.example.adminorderapp.data.shipper.ShipperRepository
+import com.example.adminorderapp.data.staff.StaffRepository
 import com.example.adminorderapp.data.store.StoreRepository
 import com.example.adminorderapp.data.store.StoreUiView
 import com.example.adminorderapp.ui.UiState
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateShipperViewModel @Inject constructor(
-    private val shipperRepository: ShipperRepository,
+    private val staffRepository: StaffRepository,
     private val storeRepository: StoreRepository
 ) : ViewModel(){
     private val _uiState = MutableLiveData(UiState())
@@ -85,9 +85,10 @@ class CreateShipperViewModel @Inject constructor(
         map["dateOfBirth"] = dateOfBirth
         map["gender"] = genderName
         map["storeId"] = _stores.value!![storePosition].id.toString()
+        map["role"] = "ROLE_STAFF"
         _uiState.value = _uiState.value?.copy(isLoading = true)
         viewModelScope.launch {
-            when(val result = shipperRepository.addShipper(map)){
+            when(val result = staffRepository.addStaff(map)){
                 is ApiResult.Success -> _uiState.value = _uiState.value?.copy(isSuccessful = true, isLoading = false)
                 is ApiResult.Error -> _uiState.value = _uiState.value?.copy(message = result.message, isLoading = false)
                 is ApiResult.Exception -> _uiState.value = _uiState.value?.copy(message = Message.SERVER_BREAKDOWN, isLoading = false)

@@ -1,7 +1,7 @@
 package com.example.adminorderapp.ui.manager
 
 import com.example.adminorderapp.util.Message
-import com.example.adminorderapp.api.manager.StaffUiView
+import com.example.adminorderapp.api.staff.StaffUiView
 
 data class ManagerUiState(
     val isLoading : Boolean = false,
