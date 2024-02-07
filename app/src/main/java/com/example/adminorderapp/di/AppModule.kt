@@ -26,8 +26,8 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideRetrofit() : Retrofit.Builder {
-        return Retrofit.Builder()
+    fun provideRetrofit() : Builder {
+        return Builder()
             .baseUrl("https://terrier-modern-violently.ngrok-free.app")
             .addConverterFactory(MoshiConverterFactory.create())
     }

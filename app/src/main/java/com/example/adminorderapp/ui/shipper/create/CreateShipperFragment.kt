@@ -93,7 +93,7 @@ class CreateShipperFragment : Fragment() {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
             addButton.setOnClickListener {
-                viewModel.addManager()
+                viewModel.addShipper()
             }
         }
         viewModel.uiState.observe(viewLifecycleOwner){

@@ -71,7 +71,12 @@ class RevenueViewModel @Inject constructor(
             handleMenuItemRevenueCallback { revenueRepository.getRevenues(from!!,to!!,menuItems.value?.get(selectedMenuItemPosition)) }
         }
     }
-
+    fun refresh(){
+        if(canMakeQuery) {
+            handleRevenueCallback { revenueRepository.getRevenues(from!!,to!!) }
+            handleMenuItemRevenueCallback { revenueRepository.getRevenues(from!!,to!!,menuItems.value?.get(selectedMenuItemPosition)) }
+        }
+    }
     private fun handleRevenueCallback(
         callback : suspend () -> ApiResult<List<Revenue>>
     ) {

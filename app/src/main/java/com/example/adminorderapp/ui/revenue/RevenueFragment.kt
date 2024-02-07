@@ -3,6 +3,7 @@ package com.example.adminorderapp.ui.revenue
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -23,6 +24,8 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 
 import dagger.hilt.android.AndroidEntryPoint
+import java.math.RoundingMode
+import kotlin.math.log
 import kotlin.random.Random
 
 @AndroidEntryPoint
@@ -56,7 +59,10 @@ class RevenueFragment : Fragment() {
                     viewModel.toSelected(to.text.toString())
                 }.show(parentFragmentManager,"DatePickerFragment")
             }
-
+            binding.swipeRefreshLayout.setOnRefreshListener {
+                binding.swipeRefreshLayout.isRefreshing = true
+                viewModel.refresh()
+            }
             overallBarChart.config()
             menuItemBarChart.config()
             binding.menuItemSpinner.setSelection(viewModel.selectedMenuItemPosition)
@@ -91,7 +97,7 @@ class RevenueFragment : Fragment() {
                 val total = it.overallRevenue.fold(0.0){ total,revenue ->
                     total + revenue.total
                 }
-                binding.overallRevenue.text = getString(R.string.total,total.toString())
+                binding.overallRevenue.text = getString(R.string.total,String.format("%.2f",total))
                 val barDataSets = arrayListOf<BarDataSet>()
                 val random = Random
                 it.overallRevenue.forEachIndexed{index,item ->

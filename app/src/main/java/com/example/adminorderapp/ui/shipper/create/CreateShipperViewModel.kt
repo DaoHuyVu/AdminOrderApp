@@ -75,7 +75,7 @@ class CreateShipperViewModel @Inject constructor(
     fun messageShown(){
         _uiState.value = _uiState.value?.copy(message = null)
     }
-    fun addManager(){
+    fun addShipper(){
         val map = HashMap<String,String>()
         map["email"] = email
         map["password"] = password
